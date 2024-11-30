@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './ProductList.css'; 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from './CartSlice';
-import { useState } from 'react';
 
 const ProductList = () => {
 
 const dispatch = useDispatch();
+const removedItemIds = useSelector((state) => state.cart.removedItemIds);
 const [disabledProducts, setDisabledProducts] = useState([]);
+
+useEffect(() => {
+  setDisabledProducts(prev => prev.filter(id => !removedItemIds.includes(id)));
+}, [removedItemIds]);
 
 const products = [
   { id: 1, name: 'Product A', price: 60 },
